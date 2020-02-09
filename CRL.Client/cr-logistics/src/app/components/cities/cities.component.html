@@ -1,0 +1,44 @@
+<h4>City</h4>
+<button pButton type="button" label="Add city" (click)="addCity()"></button>
+<p-table [value]="cities" dataKey="vin" editMode="row">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Logistic center</th>
+            <th style="width:8em"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-city let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="city">
+            <td>
+                {{city.id}}
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="city.name" required>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{city.name}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        {{city.isLogisticCenter}}
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{city.isLogisticCenter}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td style="text-align:center">
+                <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
+                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

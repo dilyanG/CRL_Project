@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using CRL.DataModel.Entities;
 using CRL.DataService.Interfaces;
+using CRL.DataService.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,42 +16,54 @@ namespace CRL.WebApp.Controllers
     public class CityController : Controller
     {
         private readonly ICityService cityService;
+        private readonly IMapper mapper;
 
-        public CityController(ICityService cityService)
+        public CityController(ICityService cityService, IMapper mapper)
         {
             this.cityService = cityService;
+            this.mapper = mapper;
         }
 
         // GET: api/City
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("byId/{id}")]
+        public IEnumerable<string> GetById(int id)
         {
             return new string[] { "value1", "value2" };
         }
 
-        //// GET: api/City/5
-        //[HttpGet("{id}", Name = "Get")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET: api/City/all
+        [HttpGet]
+        [Route("all")]
+        public OkObjectResult GetAll()
+        {
+            var result = mapper.Map<List<CityEntity>,List<CityViewModel>>(this.cityService.GetAll());
+            return Ok(result);
+        }
 
-        //// POST: api/City
-        //[HttpPost]
-        //public void Post([FromBody]string value)
-        //{
-        //}
+        // GET: api/City/5
+        [HttpGet("{id}", Name = "GetCity")]
+        public string Get(int id)
+        {
+            return "value";
+        }
 
-        //// PUT: api/City/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
+        // POST: api/City
+        [HttpPost]
+        public void Post([FromBody]string value)
+        {
+        }
 
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        // PUT: api/City/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
     }
 }

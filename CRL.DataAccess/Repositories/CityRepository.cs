@@ -18,8 +18,20 @@ namespace CRL.DataAccess.Repositories
 
         public void Add(CityEntity entity)
         {
-            Context.Cities.Add(entity);
-            Context.Database.CurrentTransaction.Commit();
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    Context.Cities.Add(entity);
+                    Context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
         }
 
         public void Dispose()
@@ -39,19 +51,42 @@ namespace CRL.DataAccess.Repositories
 
         public void Remove(CityEntity entity)
         {
-            Context.Cities.Remove(entity);
-            Context.Database.CurrentTransaction.Commit();
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    Context.Cities.Remove(entity);
+                    Context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
         }
 
         public void Update(CityEntity city)
         {
-            CityEntity forUpdate = Get(city.Id);
-            forUpdate.Name = city.Name;
-            forUpdate.IsConnected = city.IsConnected;
-            forUpdate.IsLogisticCenter = city.IsLogisticCenter;
-            forUpdate.ModifiedOn = DateTime.Now;
-            Context.SaveChanges();
-            Context.Database.CurrentTransaction.Commit();
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    CityEntity forUpdate = Get(city.Id);
+                    forUpdate.Name = city.Name;
+                    forUpdate.IsConnected = city.IsConnected;
+                    forUpdate.IsLogisticCenter = city.IsLogisticCenter;
+                    forUpdate.ModifiedOn = DateTime.Now;
+
+                    Context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
         }
     }
 }

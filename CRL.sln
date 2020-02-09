@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRL.DataModel", "CRL.DataModel\CRL.DataModel.csproj", "{41A81F02-3E24-4861-8635-7B1CAF85C4D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRL.DataModel", "CRL.DataModel\CRL.DataModel.csproj", "{41A81F02-3E24-4861-8635-7B1CAF85C4D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRL.DataAccess", "CRL.DataAccess\CRL.DataAccess.csproj", "{06C54CD6-F386-441E-83FD-BFFCCA2B4E72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRL.DataAccess", "CRL.DataAccess\CRL.DataAccess.csproj", "{06C54CD6-F386-441E-83FD-BFFCCA2B4E72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRL.DataService", "CRL.DataService\CRL.DataService.csproj", "{7D1F7B45-E5C0-415E-8F47-6E1D42B022AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRL.DataService", "CRL.DataService\CRL.DataService.csproj", "{7D1F7B45-E5C0-415E-8F47-6E1D42B022AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRL.WebApp", "CRL.WebApp\CRL.WebApp.csproj", "{89AED384-7180-49BC-9F38-A7DCDE04E2AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRL.WebApp", "CRL.WebApp\CRL.WebApp.csproj", "{89AED384-7180-49BC-9F38-A7DCDE04E2AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

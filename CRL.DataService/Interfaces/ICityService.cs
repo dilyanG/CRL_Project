@@ -7,6 +7,8 @@ namespace CRL.DataService.Interfaces
 {
     public interface ICityService
     {
+        List<CityEntity> GetAll();
+        CityEntity Get(int id);
         void AddCity(CityEntity city);
         void UpdateCity(CityEntity city);
         void DeleteCity(CityEntity city);

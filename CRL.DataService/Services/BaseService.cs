@@ -1,4 +1,5 @@
 ﻿using CRL.DataAccess;
+using CRL.DataAccess.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,9 +8,9 @@ namespace CRL.DataService.Services
 {
     public abstract class BaseService
     {
-        public readonly DataAccessService DataAccessService;
+        public readonly IDataAccessService DataAccessService;
 
-        public BaseService(DataAccessService dataAccessService)
+        public BaseService(IDataAccessService dataAccessService)
         {
             DataAccessService = dataAccessService;
         }

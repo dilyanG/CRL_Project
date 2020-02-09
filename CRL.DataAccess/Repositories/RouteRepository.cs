@@ -19,8 +19,20 @@ namespace CRL.DataAccess.Repositories
 
         public void Add(RouteEntity entity)
         {
-            Context.Routes.Add(entity);
-            Context.Database.CurrentTransaction.Commit();
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    Context.Routes.Add(entity);
+                    Context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
         }
 
         public void Dispose()
@@ -38,9 +50,12 @@ namespace CRL.DataAccess.Repositories
             return Context.Routes;
         }
 
-        public List<RouteEntity> GetRoutesByCity(int cityId)
+        public List<RouteEntity> GetRoutesByCity(int cityId, bool ignoreDirection = true, bool start = true)
         {
-            return Context.Routes.Where(r => r.StartCityId == cityId || r.EndCityId == cityId).ToList();
+            return Context.Routes.Where(r =>
+            ignoreDirection ? (r.StartCityId == cityId || r.EndCityId == cityId)
+            : start ? r.StartCityId == cityId 
+                    : r.EndCityId == cityId).ToList();
         }
 
         public List<RouteEntity> GetRoutesByCityName(string cityName)
@@ -50,17 +65,39 @@ namespace CRL.DataAccess.Repositories
 
         public void Remove(RouteEntity entity)
         {
-            Context.Routes.Remove(entity);
-            Context.Database.CurrentTransaction.Commit();
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    Context.Routes.Remove(entity);
+                    Context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
         }
 
         public void Update(RouteEntity route)
         {
-            RouteEntity forUpdate = Get(route.Id);
-            forUpdate.Distance = route.Distance;
-            forUpdate.ModifiedOn = DateTime.Now;
-            Context.SaveChanges();
-            Context.Database.CurrentTransaction.Commit();
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    RouteEntity forUpdate = Get(route.Id);
+                    forUpdate.Distance = route.Distance;
+                    forUpdate.ModifiedOn = DateTime.Now; Context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
         }
     }
 }
