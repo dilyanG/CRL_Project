@@ -1,5 +1,6 @@
 ﻿using CRL.DataAccess.Interfaces;
 using CRL.DataModel.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace CRL.DataAccess.Repositories
 
         public void Add(RouteEntity entity)
         {
+            entity.Start = Context.Cities.Where(c => c.Id == entity.Start.Id).FirstOrDefault();
+            entity.End = Context.Cities.Where(c => c.Id == entity.End.Id).FirstOrDefault();
+
             using (var transaction = Context.Database.BeginTransaction())
             {
                 try
@@ -28,7 +32,7 @@ namespace CRL.DataAccess.Repositories
 
                     transaction.Commit();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                 }
@@ -47,15 +51,12 @@ namespace CRL.DataAccess.Repositories
 
         public IEnumerable<RouteEntity> GetAll()
         {
-            return Context.Routes;
+            return Context.Routes.Include(r=>r.Start).Include(r=>r.End);
         }
 
         public List<RouteEntity> GetRoutesByCity(int cityId, bool ignoreDirection = true, bool start = true)
         {
-            return Context.Routes.Where(r =>
-            ignoreDirection ? (r.StartCityId == cityId || r.EndCityId == cityId)
-            : start ? r.StartCityId == cityId 
-                    : r.EndCityId == cityId).ToList();
+            return null;
         }
 
         public List<RouteEntity> GetRoutesByCityName(string cityName)

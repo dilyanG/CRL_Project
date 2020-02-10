@@ -1,11 +1,47 @@
 <h4>Routes</h4>
-<button pButton type="button" label="Add route" (click)="addRoute()"></button>
+<button pButton type="button" label="Add route" (click)="showAddDialog()"></button>
+<p-dialog header="Add city" *ngIf="showDialog && routeForAdd" [(visible)]="showDialog && routeForAdd">
+    <div class="ui-g">
+        <div class="ui-g-4">
+            <p-checkbox [(ngModel)]="routeForAdd.twoway" binary="true"></p-checkbox>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-6">
+            <p-autoComplete [(ngModel)]="routeForAdd.start" [suggestions]="filteredCitiesSingle"
+                (completeMethod)="filterCitySingle($event)" field="name" [size]="30" placeholder="Cities"
+                [minLength]="1">
+            </p-autoComplete>
+        </div>
+        <div class="ui-g-6">
+            <p-autoComplete [(ngModel)]="routeForAdd.end" [suggestions]="filteredCitiesSingle"
+                (completeMethod)="filterCitySingle($event)" field="name" [size]="30" placeholder="Cities"
+                [minLength]="1">
+            </p-autoComplete>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-6">
+            <p-inputMask [(ngModel)]="routeForAdd.name" mask="a99" required></p-inputMask>
+        </div>
+        <div class="ui-g-6">
+            <p-spinner [(ngModel)]="routeForAdd.distance" required></p-spinner>
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="addRoute()" label="Add"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="closeAddDialog()" label="Cancel"
+            class="ui-button-secondary"></button>
+    </p-footer>
+</p-dialog>
 <p-table [value]="routes" dataKey="vin" editMode="row">
     <ng-template pTemplate="header">
         <tr>
             <th>Id</th>
             <th>Name</th>
             <th>Distance</th>
+            <th>Start</th>
+            <th>End</th>
             <th style="width:8em"></th>
         </tr>
     </ng-template>
@@ -34,10 +70,37 @@
                     </ng-template>
                 </p-cellEditor>
             </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-autoComplete [(ngModel)]="routeForAdd.start" [suggestions]="filteredCitiesSingle"
+                            (completeMethod)="filterCitySingle($event)" field="name" [size]="30" placeholder="Cities"
+                            [minLength]="1"></p-autoComplete>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{route.start?.name}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-autoComplete [(ngModel)]="routeForAdd.end" [suggestions]="filteredCitiesSingle"
+                            (completeMethod)="filterCitySingle($event)" field="name" [size]="30" placeholder="Cities"
+                            [minLength]="1"></p-autoComplete>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{route.end?.name}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
             <td style="text-align:center">
-                <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
-                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
-                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+                <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil"
+                    class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check"
+                    class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
+                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times"
+                    class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
             </td>
         </tr>
     </ng-template>

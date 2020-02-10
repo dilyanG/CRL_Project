@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Remove="Migrations\20200209151246_Regex_Updated.cs" />
+    <Compile Remove="Migrations\20200210135328_UpdateRouteEntity.cs" />
   </ItemGroup>
 
   <ItemGroup>

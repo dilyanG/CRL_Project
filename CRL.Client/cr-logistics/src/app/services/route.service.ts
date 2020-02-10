@@ -11,7 +11,10 @@ export class RouteService {
 
   constructor(private http: HttpClient) { }
   
-  getCities(): Observable<RouteModel[]> {
+  getRoutes(): Observable<RouteModel[]> {
     return this.http.get<RouteModel[]>(environment.webApi + "route/all");
+  }
+  addRoute(route: RouteModel) {
+    return this.http.post(environment.webApi + "route", route);
   }
 }

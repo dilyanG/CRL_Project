@@ -48,10 +48,21 @@ namespace CRL.WebApp.Controllers
             return "value";
         }
 
+        // GET: api/City/5
+        [HttpGet("ByName/{name}")]
+        public OkObjectResult GetByName(string name)
+        {
+            var result = mapper.Map<List<CityEntity>, List<CityViewModel>>(this.cityService.GetAllByName(name));
+            return Ok(result);
+        }
+
         // POST: api/City
         [HttpPost]
-        public void Post([FromBody]string value)
+        public OkResult Post([FromBody]CityViewModel city)
         {
+            CityEntity entity = mapper.Map<CityEntity>(city);
+            this.cityService.AddCity(entity);
+            return Ok();
         }
 
         // PUT: api/City/5

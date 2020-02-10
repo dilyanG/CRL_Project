@@ -10,9 +10,15 @@ import { CityModel } from '../models/city.model';
 export class CityService {
 
   constructor(private http: HttpClient) { }
-  
+
   getCities(): Observable<CityModel[]> {
     return this.http.get<CityModel[]>(environment.webApi + "city/all");
+  }
+  getCitiesByName(name: string): Observable<CityModel[]> {
+    return this.http.get<CityModel[]>(environment.webApi + "city/byName/"+name);
+  }
+  addCity(city: CityModel) {
+    return this.http.post(environment.webApi + "city", city);
   }
 }
 

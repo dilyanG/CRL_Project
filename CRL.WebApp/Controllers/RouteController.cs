@@ -49,8 +49,11 @@ namespace CRL.WebApp.Controllers
 
         // POST: api/Route
         [HttpPost]
-        public void Post([FromBody]string value)
+        public OkResult Post([FromBody]RouteViewModel route)
         {
+            RouteEntity entity = mapper.Map<RouteEntity>(route);
+            this.routeService.AddRoute(entity);
+            return Ok();
         }
 
         // PUT: api/Route/5

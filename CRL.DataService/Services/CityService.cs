@@ -51,6 +51,11 @@ namespace CRL.DataService.Services
             return DataAccessService.CityRepository.GetAll().ToList();
         }
 
+        public List<CityEntity> GetAllByName(string name)
+        {
+            return DataAccessService.CityRepository.GetAllByName(name).ToList();
+        }
+
         public void UpdateCity(CityEntity city)
         {
             DataAccessService.CityRepository.Add(city);

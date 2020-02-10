@@ -10,17 +10,39 @@ import { CityService } from 'src/app/services/city.service';
 export class CitiesComponent implements OnInit {
 
   cities: CityModel[]=[];
+  showDialog = false;
+  cityForAdd: CityModel;
 
   constructor(private cityService: CityService) { }
 
   ngOnInit() {
+    this.getAllCities();
+  }
+  showAddDialog(){
+    this.showDialog = true;
+    this.cityForAdd = new CityModel();
+  }
+  addCity(){
+    this.cityService.addCity(this.cityForAdd).subscribe(
+      res=>{
+        this.showDialog=false;
+        this.cityForAdd=undefined;
+        this.getAllCities();
+      }
+    );
+  }
+
+  closeAddDialog() {
+    this.showDialog = false;
+    this.cityForAdd = undefined;
+  }
+
+  getAllCities(){
     this.cityService.getCities().subscribe(
       res=>{
         this.cities=res as CityModel[];
       }
     )
   }
-  addCity(){
-    this.cities= [ new CityModel(), ...this.cities ]
-  }
+  
 }

@@ -51,8 +51,8 @@ namespace CRL.WebApp
             });
 
             services.AddTransient<IDataAccessService, DataAccessService>();
-            services.AddSingleton<IRouteService, RouteService>();
-            services.AddSingleton<ICityService, CityService>();
+            services.AddTransient<IRouteService, RouteService>();
+            services.AddTransient<ICityService, CityService>();
             services.AddMvc();
         }
 

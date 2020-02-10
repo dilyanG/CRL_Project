@@ -19,11 +19,7 @@ namespace CRL.DataService.Services
         public void AddRoute(RouteEntity route)
         {            
             DataAccessService.RouteRepository.Add(route);
-            List<RouteEntity> discovered = DiscoverRoutes(route);
-            foreach (RouteEntity item in discovered)
-            {
-                DataAccessService.RouteRepository.Add(item);
-            }
+
         }
 
         public void DeleteRoute(RouteEntity route)

@@ -7,5 +7,7 @@ namespace CRL.DataAccess.Interfaces
 {
     public interface ICityRepository : IDisposable, IBaseRepository<CityEntity>
     {
+        int GetCount();
+        IEnumerable<CityEntity> GetAllByName(string name);
     }
 }

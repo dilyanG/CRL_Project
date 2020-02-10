@@ -1,19 +1,23 @@
-<h4>City</h4>
-<button pButton type="button" label="Add city" (click)="addCity()"></button>
+<h4>Cities</h4>
+<button pButton type="button" label="Add city" (click)="showAddDialog()"></button>
+<p-dialog header="Add city" [(visible)]="showDialog">
+    <input *ngIf="cityForAdd" pInputText type="text" [(ngModel)]="cityForAdd.name" required>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="addCity()" label="Add"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="closeAddDialog()" label="Cancel" class="ui-button-secondary"></button>
+    </p-footer>
+</p-dialog>
 <p-table [value]="cities" dataKey="vin" editMode="row">
     <ng-template pTemplate="header">
         <tr>
-            <th>Id</th>
             <th>Name</th>
+            <th>Created on</th>
             <th>Logistic center</th>
             <th style="width:8em"></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-city let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="city">
-            <td>
-                {{city.id}}
-            </td>
+        <tr [pEditableRow]="city">            
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
@@ -23,6 +27,9 @@
                         {{city.name}}
                     </ng-template>
                 </p-cellEditor>
+            </td>
+            <td>
+                {{city.createdOn | date: 'short'}}
             </td>
             <td>
                 <p-cellEditor>

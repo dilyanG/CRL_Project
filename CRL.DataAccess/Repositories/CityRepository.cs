@@ -46,7 +46,7 @@ namespace CRL.DataAccess.Repositories
 
         public IEnumerable<CityEntity> GetAll()
         {
-            return Context.Cities;
+            return Context.Cities.OrderBy(c=>c.CreatedOn);
         }
 
         public void Remove(CityEntity entity)
@@ -87,6 +87,15 @@ namespace CRL.DataAccess.Repositories
                     transaction.Rollback();
                 }
             }
+        }
+        public int GetCount()
+        {
+            return Context.Cities.Count();
+        }
+
+        public IEnumerable<CityEntity> GetAllByName(string name)
+        {
+            return Context.Cities.Where(c=>c.Name.Contains(name));
         }
     }
 }
