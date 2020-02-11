@@ -7,7 +7,8 @@ namespace CRL.DataAccess.Interfaces
 {
     public interface IRouteRepository : IDisposable, IBaseRepository<RouteEntity>
     {
-        List<RouteEntity> GetRoutesByCity(int cityId, bool ignoreDirection = true, bool start = true);
+        List<RouteEntity> GetRoutesByCity(int cityId, int[] without);
+        List<RouteEntity> GetRoutesByCities(int[] ids);
         List<RouteEntity> GetRoutesByCityName(string cityName);
     }
 }

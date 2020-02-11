@@ -56,6 +56,13 @@ namespace CRL.WebApp.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("LogisticCenter")]
+        public OkObjectResult GetLogisticCenter()
+        {
+            return Ok(this.cityService.FindLogisticCenter());            
+        }
+
         // POST: api/City
         [HttpPost]
         public OkResult Post([FromBody]CityViewModel city)

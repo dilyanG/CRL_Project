@@ -12,7 +12,8 @@ export class CitiesComponent implements OnInit {
   cities: CityModel[]=[];
   showDialog = false;
   cityForAdd: CityModel;
-
+  logisticCenter: CityModel;
+  
   constructor(private cityService: CityService) { }
 
   ngOnInit() {
@@ -44,5 +45,11 @@ export class CitiesComponent implements OnInit {
       }
     )
   }
-  
+  findLogisticCenter(){
+    this.cityService.findLogisticCenter().subscribe(
+      res=>{
+        this.logisticCenter = res;
+      }
+    )
+  }
 }

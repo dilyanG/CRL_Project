@@ -20,5 +20,8 @@ export class CityService {
   addCity(city: CityModel) {
     return this.http.post(environment.webApi + "city", city);
   }
+  findLogisticCenter(): Observable<CityModel> {
+    return this.http.get<CityModel>(environment.webApi + "city/LogisticCenter");
+  }
 }
 

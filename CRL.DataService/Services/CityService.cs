@@ -1,6 +1,7 @@
 ﻿using CRL.DataAccess;
 using CRL.DataAccess.Interfaces;
 using CRL.DataModel.Entities;
+using CRL.DataService.Helpers;
 using CRL.DataService.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,12 @@ namespace CRL.DataService.Services
 {
     public class CityService : BaseService, ICityService
     {
+        Algorithms algorithms;
+
+
         public CityService(IDataAccessService dataAccessService) : base(dataAccessService)
         {
-
+            algorithms = new Algorithms(dataAccessService);
         }
 
         public void AddCity(CityEntity city)
@@ -23,17 +27,7 @@ namespace CRL.DataService.Services
 
         public void CalulateClosenessCentrality(CityEntity city)
         {
-            List<RouteEntity> routes = DataAccessService.RouteRepository.GetRoutesByCity(city.Id);
-            double allRoutesDistance = 0;
-            foreach (RouteEntity route in routes)
-            {
-                allRoutesDistance += route.Distance;
-            }
-            if (allRoutesDistance != 0)
-            {
-                city.ClosenessCentralityCoefficient = 1 / allRoutesDistance;
-                UpdateCity(city);
-            }
+
         }
 
         public void DeleteCity(CityEntity city)
@@ -59,6 +53,16 @@ namespace CRL.DataService.Services
         public void UpdateCity(CityEntity city)
         {
             DataAccessService.CityRepository.Add(city);
+        }
+
+        public CityEntity FindLogisticCenter()
+        {
+            CityEntity start = DataAccessService.CityRepository.GetAll().FirstOrDefault();
+
+            CityEntity logisticCenter = algorithms.FindLogisticCenter(start);
+            logisticCenter.IsLogisticCenter = true;
+            DataAccessService.CityRepository.Update(logisticCenter);
+            return logisticCenter;
         }
     }
 }

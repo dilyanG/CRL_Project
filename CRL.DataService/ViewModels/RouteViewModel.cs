@@ -19,6 +19,6 @@ namespace CRL.DataService.ViewModels
         public int Distance { get; set; }
         public bool IsDirect { get; set; }
         public DateTime CreatedOn { get; set; }
-
+        public bool TwoWay { get; set; }
     }
 }

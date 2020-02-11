@@ -51,12 +51,20 @@ namespace CRL.DataAccess.Repositories
 
         public IEnumerable<RouteEntity> GetAll()
         {
-            return Context.Routes.Include(r=>r.Start).Include(r=>r.End);
+            return Context.Routes.Include(r => r.Start).Include(r => r.End);
         }
 
-        public List<RouteEntity> GetRoutesByCity(int cityId, bool ignoreDirection = true, bool start = true)
+        public List<RouteEntity> GetRoutesByCity(int cityId, int[] without)
         {
-            return null;
+            return Context.Routes.Include(r => r.Start).Include(r => r.End)
+                .Where(r => (r.Start.Id == cityId || r.End.Id == cityId)
+                            && !without.Contains(r.End.Id) 
+                            && !without.Contains(r.Start.Id)).ToList();
+        }
+
+        public List<RouteEntity> GetRoutesByCities(int[] ids)
+        {
+            return Context.Routes.Where(r => ids.Contains(r.Start.Id)).ToList();
         }
 
         public List<RouteEntity> GetRoutesByCityName(string cityName)
