@@ -1,39 +1,54 @@
 <h4>Routes</h4>
 <button pButton type="button" label="Add route" (click)="showAddDialog()"></button>
 <p-dialog header="Add city" *ngIf="showDialog && routeForAdd" [(visible)]="showDialog && routeForAdd">
+    <ng-form #myForm="ngForm">
+
     <div class="ui-g">
-        <div class="ui-g-6">
+        <div class="ui-g-2">
             <label>Start</label>
-            <p-autoComplete [(ngModel)]="routeForAdd.start" [suggestions]="filteredCitiesSingle"
-                (completeMethod)="filterCitySingle($event)" field="name" [size]="30" placeholder="Cities"
-                [minLength]="1">
-            </p-autoComplete>
         </div>
         <div class="ui-g-6">
-            <label>End</label>
-            <p-autoComplete [(ngModel)]="routeForAdd.end" [suggestions]="filteredCitiesSingle"
+            <p-autoComplete [(ngModel)]="routeForAdd.start" [suggestions]="filteredCitiesSingle"
                 (completeMethod)="filterCitySingle($event)" field="name" [size]="30" placeholder="Cities"
-                [minLength]="1">
+                [minLength]="1" name="startCity">
             </p-autoComplete>
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-6">
-            <label>Name</label>
-            <p-inputMask [(ngModel)]="routeForAdd.name" mask="a99" required></p-inputMask>
+        <div class="ui-g-2">
+            <label>End</label>
         </div>
         <div class="ui-g-6">
+            <p-autoComplete [(ngModel)]="routeForAdd.end" [suggestions]="filteredCitiesSingle"
+                (completeMethod)="filterCitySingle($event)" field="name" [size]="30" placeholder="Cities"
+                [minLength]="1" name="endCity">
+            </p-autoComplete>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2">
+            <label>Name</label>
+        </div>
+        <div class="ui-g-6">
+            <p-inputMask [(ngModel)]="routeForAdd.name" mask="a99" required name="routeName"></p-inputMask>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2">
             <label>Distance</label>
-            <p-spinner [(ngModel)]="routeForAdd.distance" required></p-spinner>
+        </div>
+        <div class="ui-g-6">
+            <p-spinner [(ngModel)]="routeForAdd.distance" required name="distance"></p-spinner>
         </div>
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="addRoute()" label="Add"></button>
+        <button type="button" pButton [disabled]="!myForm.valid" icon="pi pi-check" (click)="addRoute()" label="Add"></button>
         <button type="button" pButton icon="pi pi-times" (click)="closeAddDialog()" label="Cancel"
             class="ui-button-secondary"></button>
     </p-footer>
+    </ng-form>
 </p-dialog>
-<p-table [value]="routes" dataKey="vin" editMode="row">
+<p-table [value]="routes" dataKey="vin" editMode="row" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header">
         <tr>
             <th>Id</th>

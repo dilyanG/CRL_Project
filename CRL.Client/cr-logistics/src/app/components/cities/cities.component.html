@@ -11,17 +11,17 @@
         Logistic center: {{logisticCenter.name}}
     </div>
 </div>
-<p-dialog header="Add city" [(visible)]="showDialog">
+<p-dialog header="Add city" *ngIf="cityForAdd" [(visible)]="showDialog">
     <div class="ui-g">
-        <label>Name</label><input *ngIf="cityForAdd" pInputText type="text" [(ngModel)]="cityForAdd.name" required>
+        <label>Name</label><input pInputText type="text" [(ngModel)]="cityForAdd.name" required>
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="addCity()" label="Add"></button>
+        <button type="button" [disabled]="!cityForAdd.name" pButton icon="pi pi-check" (click)="addCity()" label="Add"></button>
         <button type="button" pButton icon="pi pi-times" (click)="closeAddDialog()" label="Cancel"
             class="ui-button-secondary"></button>
     </p-footer>
 </p-dialog>
-<p-table [value]="cities" dataKey="vin" editMode="row">
+<p-table [value]="cities" dataKey="vin" editMode="row" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header">
         <tr>
             <th>Name</th>
