@@ -97,5 +97,19 @@ namespace CRL.DataAccess.Repositories
         {
             return Context.Cities.Where(c=>c.Name.Contains(name));
         }
+
+        public bool CheckForLogisticCenter()
+        {
+            return Context.Cities.Where(c => c.IsLogisticCenter).Any();
+        }
+        public CityEntity GetLogisticCenter()
+        {
+            return Context.Cities.Where(c => c.IsLogisticCenter).FirstOrDefault();
+        }
+
+        public CityEntity GetByName(string name)
+        {
+            return Context.Cities.Where(c => c.Name.ToLower()==name.ToLower()).FirstOrDefault();
+        }
     }
 }

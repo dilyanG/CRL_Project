@@ -9,5 +9,9 @@ namespace CRL.DataAccess.Interfaces
     {
         int GetCount();
         IEnumerable<CityEntity> GetAllByName(string name);
+        bool CheckForLogisticCenter();
+        CityEntity GetLogisticCenter();
+        CityEntity GetByName(string name);
+
     }
 }

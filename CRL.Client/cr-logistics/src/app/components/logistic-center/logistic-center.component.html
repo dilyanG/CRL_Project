@@ -1,9 +1,9 @@
 <p>CRL application</p>
 <div>
-    <app-cities></app-cities>
+    <app-cities [changes]="areThereAnyChanges"></app-cities>
 </div>
 <div>
-    <app-routes></app-routes>
+    <app-routes (changesEmitter)="updateChangesForLC($event)"></app-routes>
 </div>
 <div>
     <app-map></app-map>

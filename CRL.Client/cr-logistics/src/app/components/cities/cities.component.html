@@ -4,14 +4,17 @@
         <button pButton type="button" label="Add city" (click)="showAddDialog()"></button>
     </div>
     <div class="ui-g-4">
-        <button pButton type="button" label="Define Logistic center" (click)="findLogisticCenter()"></button>
+        <button pButton type="button" [disabled]="!changes" label="Define Logistic center"
+            (click)="findLogisticCenter()"></button>
     </div>
     <div *ngIf="logisticCenter" class="ui-g-4">
         Logistic center: {{logisticCenter.name}}
     </div>
 </div>
 <p-dialog header="Add city" [(visible)]="showDialog">
-    <input *ngIf="cityForAdd" pInputText type="text" [(ngModel)]="cityForAdd.name" required>
+    <div class="ui-g">
+        <label>Name</label><input *ngIf="cityForAdd" pInputText type="text" [(ngModel)]="cityForAdd.name" required>
+    </div>
     <p-footer>
         <button type="button" pButton icon="pi pi-check" (click)="addCity()" label="Add"></button>
         <button type="button" pButton icon="pi pi-times" (click)="closeAddDialog()" label="Cancel"
@@ -54,11 +57,11 @@
             </td>
             <td style="text-align:center">
                 <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil"
-                    class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+                    class="ui-button-info" (click)="onRowEditInit(city)"></button>
                 <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check"
-                    class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
+                    class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(city)"></button>
                 <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times"
-                    class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+                    class="ui-button-danger" (click)="onRowEditCancel(city, ri)"></button>
             </td>
         </tr>
     </ng-template>

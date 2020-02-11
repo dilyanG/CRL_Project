@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CityService } from '../../services/city.service';
 
 @Component({
   selector: 'app-logistic-center',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogisticCenterComponent implements OnInit {
 
-  constructor() { }
+  areThereAnyChanges: boolean = false;
+
+  constructor(private cityService: CityService) { }
 
   ngOnInit() {
+    this.checkForLogisticCenter();
   }
-
+  updateChangesForLC(){
+    this.areThereAnyChanges = true;
+  }
+  checkForLogisticCenter(){
+    this.cityService.checkForLogisticCenter().subscribe(
+      res=>{
+        this.areThereAnyChanges=res;
+      }
+    )
+  }
 }

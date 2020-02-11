@@ -1,23 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { RouteService } from 'src/app/services/route.service';
-import { RouteModel } from 'src/app/models/route.model';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { MessageService } from 'primeng/api';
+
 import { CityModel } from '../../models/city.model';
 import { CityService } from '../../services/city.service';
+import { RouteModel } from '../../models/route.model';
+import { RouteService } from 'src/app/services/route.service';
 
 @Component({
   selector: 'app-routes',
   templateUrl: './routes.component.html',
+  providers: [MessageService],
   styleUrls: ['./routes.component.css']
 })
 export class RoutesComponent implements OnInit {
 
+  @Output() changesEmitter = new EventEmitter<boolean>();
+
   routes: RouteModel[] = [];
   showDialog = false;
   routeForAdd: RouteModel;
+  routeForEdit: RouteModel;
+
   filteredCitiesSingle: CityModel[] = [];
 
   constructor(private routeService: RouteService,
-              private cityService: CityService) { }
+    private cityService: CityService,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     this.getAllRoutes();
@@ -33,6 +41,7 @@ export class RoutesComponent implements OnInit {
       res => {
         this.showDialog = false;
         this.routeForAdd = undefined;
+        this.changesEmitter.emit(true);
         this.getAllRoutes();
       }
     );
@@ -54,10 +63,34 @@ export class RoutesComponent implements OnInit {
   filterCitySingle(event) {
     let query = event.query;
     this.cityService.getCitiesByName(query).subscribe(
-      res=>{
-        this.filteredCitiesSingle=res;
+      res => {
+        this.filteredCitiesSingle = res;
       }
     );
+  }
 
+  onRowEditInit(route: RouteModel) {
+    this.routeForEdit = route;
+  }
+
+  onRowEditSave(route: RouteModel) {
+    if (route.distance > 0 || route.end.id != route.start.id) {
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Route is updated' });
+      this.routeService.updateRoute(route).subscribe(
+        res => {
+          this.changesEmitter.emit(true);
+          this.getAllRoutes();
+        }
+      )
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Year is required' });
+    }
+
+
+  }
+
+  onRowEditCancel(city: CityModel, index: number) {
+    this.routes[index] = this.routeForEdit;
+    this.routeForEdit = undefined;
   }
 }

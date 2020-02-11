@@ -46,7 +46,7 @@ namespace CRL.DataAccess.Repositories
 
         public RouteEntity Get(int id)
         {
-            return Context.Routes.Where(r => r.Id == id).FirstOrDefault();
+            return Context.Routes.Where(r => r.Id == id).Include(r => r.Start).Include(r => r.End).FirstOrDefault();
         }
 
         public IEnumerable<RouteEntity> GetAll()
@@ -98,6 +98,11 @@ namespace CRL.DataAccess.Repositories
                 {
                     RouteEntity forUpdate = Get(route.Id);
                     forUpdate.Distance = route.Distance;
+                    if (forUpdate.Start.Id != route.Start.Id)
+                        forUpdate.Start = Context.Cities.Where(c => c.Id == route.Start.Id).FirstOrDefault();
+                    if (forUpdate.End.Id != route.End.Id)
+                        forUpdate.End = Context.Cities.Where(c => c.Id == route.End.Id).FirstOrDefault();
+                    forUpdate.Name = route.Name;
                     forUpdate.ModifiedOn = DateTime.Now; Context.SaveChanges();
 
                     transaction.Commit();

@@ -15,6 +15,7 @@ namespace CRL.DataService.Interfaces
         void DeleteCity(CityEntity city);
         void CalulateClosenessCentrality(CityEntity city);
         CityEntity FindLogisticCenter();
-
+        bool CheckForLogisticCenter();
+        bool CheckCityByName(int id, string name);
     }
 }

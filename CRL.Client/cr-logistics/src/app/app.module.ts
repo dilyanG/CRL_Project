@@ -10,6 +10,8 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {SpinnerModule} from 'primeng/spinner';
 import {InputMaskModule} from 'primeng/inputmask';
 import {CheckboxModule} from 'primeng/checkbox';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -42,6 +44,8 @@ import { FormsModule } from '@angular/forms';
     InputMaskModule,
     AutoCompleteModule,
     CheckboxModule,
+    MessagesModule,
+    MessageModule,
     HttpClientModule,
     AppRoutingModule,
   ],

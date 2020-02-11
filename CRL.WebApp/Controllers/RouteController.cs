@@ -56,10 +56,13 @@ namespace CRL.WebApp.Controllers
             return Ok();
         }
 
-        // PUT: api/Route/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        [Route("update")]
+        public OkResult Update([FromBody]RouteViewModel city)
         {
+            RouteEntity entity = mapper.Map<RouteEntity>(city);
+            this.routeService.UpdateRoute(entity);
+            return Ok();
         }
 
         // DELETE: api/ApiWithActions/5

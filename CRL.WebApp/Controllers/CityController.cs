@@ -62,6 +62,22 @@ namespace CRL.WebApp.Controllers
         {
             return Ok(this.cityService.FindLogisticCenter());            
         }
+        
+
+        [HttpGet]
+        [Route("checkForLC")]
+        public OkObjectResult CheckForLC()
+        {
+            return Ok(this.cityService.CheckForLogisticCenter());
+        }
+
+
+        [HttpGet]
+        [Route("checkCityName/{id}/{name}")]
+        public OkObjectResult CheckCityName(int id, string name)
+        {
+            return Ok(this.cityService.CheckCityByName(id, name));
+        }
 
         // POST: api/City
         [HttpPost]
@@ -72,10 +88,13 @@ namespace CRL.WebApp.Controllers
             return Ok();
         }
 
-        // PUT: api/City/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        [Route("update")]
+        public OkResult Update([FromBody]CityViewModel city)
         {
+            CityEntity entity = mapper.Map<CityEntity>(city);
+            this.cityService.UpdateCity(entity);
+            return Ok();
         }
 
         // DELETE: api/ApiWithActions/5

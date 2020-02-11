@@ -6,6 +6,7 @@ using System.Text;
 
 namespace CRL.DataModel.Interfaces
 {
+    //This interface defines trackable objects: with identificators and dates for modification
     public interface ITrackable
     {
         [Key]

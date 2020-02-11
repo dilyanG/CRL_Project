@@ -52,17 +52,37 @@ namespace CRL.DataService.Services
 
         public void UpdateCity(CityEntity city)
         {
-            DataAccessService.CityRepository.Add(city);
+            DataAccessService.CityRepository.Update(city);
         }
 
         public CityEntity FindLogisticCenter()
         {
+            //defining a starting city needed for Prim's algorithm
             CityEntity start = DataAccessService.CityRepository.GetAll().FirstOrDefault();
 
-            CityEntity logisticCenter = algorithms.FindLogisticCenter(start);
-            logisticCenter.IsLogisticCenter = true;
-            DataAccessService.CityRepository.Update(logisticCenter);
-            return logisticCenter;
+            //getting the previous logistic Center
+            CityEntity previousLogisticCenter = DataAccessService.CityRepository.GetLogisticCenter();
+
+            CityEntity newLogisticCenter = algorithms.FindLogisticCenter(start);
+            if (previousLogisticCenter?.Id != newLogisticCenter.Id)
+            {
+                previousLogisticCenter.IsLogisticCenter = false;
+                newLogisticCenter.IsLogisticCenter = true;
+                DataAccessService.CityRepository.Update(previousLogisticCenter);
+                DataAccessService.CityRepository.Update(newLogisticCenter);
+            }
+            return newLogisticCenter;
+        }
+        public bool CheckForLogisticCenter()
+        {
+            return this.DataAccessService.CityRepository.CheckForLogisticCenter();
+        }
+        public bool CheckCityByName(int id, string name) {
+
+            CityEntity byName = DataAccessService.CityRepository.GetByName(name);
+            if (byName == null) return true;
+            else if (byName.Id == id) return true;
+            else return false;
         }
     }
 }

@@ -17,4 +17,7 @@ export class RouteService {
   addRoute(route: RouteModel) {
     return this.http.post(environment.webApi + "route", route);
   }
+  updateRoute(route: RouteModel) {
+    return this.http.post(environment.webApi + "route/update", route);
+  }
 }
