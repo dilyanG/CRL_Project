@@ -95,17 +95,12 @@ namespace CRL.DataService.Helpers
                 {
                     treeRoutes.Add(forAdd);
                     available.Remove(forAdd);
-                    if (visitedCities.Contains(node))
-                    {
-                        if (forAdd.End?.Id != node.Id)
-                            visitedCities.Add(forAdd.End);
-                        else
-                            visitedCities.Add(forAdd.Start);
-                    }
+                    if (visitedCities.Contains(forAdd.Start))
+                        visitedCities.Add(forAdd.End);
+                    else if (visitedCities.Contains(forAdd.End))
+                        visitedCities.Add(forAdd.Start);
                     else
-                    {
                         visitedCities.Add(node);
-                    }
                     if (forAdd.End?.Id != node.Id)
                         node = forAdd.End;
                     else
