@@ -10,6 +10,7 @@ namespace CRL.DataService.Interfaces
         List<CityEntity> GetAll();
         List<CityEntity> GetAllByName(string name);
         CityEntity Get(int id);
+        int GetCount();
         void AddCity(CityEntity city);
         void UpdateCity(CityEntity city);
         void DeleteCity(CityEntity city);

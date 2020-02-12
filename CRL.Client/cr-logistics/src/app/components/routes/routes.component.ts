@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, SimpleChange, OnChanges } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 import { CityModel } from '../../models/city.model';
@@ -12,12 +12,13 @@ import { RouteService } from 'src/app/services/route.service';
   providers: [MessageService],
   styleUrls: ['./routes.component.css']
 })
-export class RoutesComponent implements OnInit {
+export class RoutesComponent implements OnInit, OnChanges {
 
   @Output() changesEmitter = new EventEmitter<boolean>();
 
   routes: RouteModel[] = [];
-  showDialog = false;
+  showDialog: boolean = false;
+  canAdd: boolean = true;
   routeForAdd: RouteModel;
   routeForEdit: RouteModel;
 
@@ -30,13 +31,15 @@ export class RoutesComponent implements OnInit {
   ngOnInit() {
     this.getAllRoutes();
   }
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    this.canAdd = changes.canAdd.currentValue;
+  }
 
   showAddDialog() {
     this.showDialog = true;
     this.routeForAdd = new RouteModel();
   }
   addRoute() {
-    this.routeForAdd
     this.routeService.addRoute(this.routeForAdd).subscribe(
       res => {
         this.showDialog = false;

@@ -57,6 +57,13 @@ namespace CRL.WebApp.Controllers
         }
 
         [HttpGet]
+        [Route("Count")]
+        public OkObjectResult GetCount()
+        {
+            return Ok(this.cityService.GetCount());
+        }
+
+        [HttpGet]
         [Route("LogisticCenter")]
         public OkObjectResult GetLogisticCenter()
         {

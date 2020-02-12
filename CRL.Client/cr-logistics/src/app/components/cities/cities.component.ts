@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChange, Output, EventEmitter } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 import { CityService } from 'src/app/services/city.service';
@@ -13,6 +13,7 @@ import { CityModel } from '../../models/city.model';
 export class CitiesComponent implements OnInit, OnChanges {
 
   @Input() changes: boolean;
+  @Output() canAddRoutes: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
   cities: CityModel[] = [];
@@ -55,6 +56,8 @@ export class CitiesComponent implements OnInit, OnChanges {
     this.cityService.getCities().subscribe(
       res => {
         this.cities = res as CityModel[];
+        if (this.cities.length > 1)
+          this.canAddRoutes.emit(true);
       }
     )
   }
@@ -77,14 +80,14 @@ export class CitiesComponent implements OnInit, OnChanges {
         if (res) {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'City is updated' });
           this.cityService.updateCity(city).subscribe(
-            res=>{
+            res => {
               this.changes = true;
               this.getAllCities();
             }
           )
         } else {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Name is not unique' });
-          this.cities[this.cities.findIndex(c=>c.id==this.cityForEdit.id)] = this.cityForEdit;
+          this.cities[this.cities.findIndex(c => c.id == this.cityForEdit.id)] = this.cityForEdit;
           this.cityForAdd = undefined;
         }
       }

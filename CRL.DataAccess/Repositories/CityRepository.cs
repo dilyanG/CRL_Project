@@ -75,14 +75,15 @@ namespace CRL.DataAccess.Repositories
                     CityEntity forUpdate = Get(city.Id);
                     forUpdate.Name = city.Name;
                     forUpdate.IsConnected = city.IsConnected;
-                    forUpdate.IsLogisticCenter = city.IsLogisticCenter;
+                    forUpdate.IsLogisticCenter = city.IsLogisticCenter;                    
+                    forUpdate.ClosenessCentralityCoefficient = city.ClosenessCentralityCoefficient;
                     forUpdate.ModifiedOn = DateTime.Now;
 
                     Context.SaveChanges();
 
                     transaction.Commit();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                 }

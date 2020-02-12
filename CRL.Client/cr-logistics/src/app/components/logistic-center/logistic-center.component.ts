@@ -9,14 +9,15 @@ import { CityService } from '../../services/city.service';
 export class LogisticCenterComponent implements OnInit {
 
   areThereAnyChanges: boolean = false;
+  canAddRoutes: boolean = true;
 
   constructor(private cityService: CityService) { }
 
   ngOnInit() {
     this.checkForLogisticCenter();
   }
-  updateChangesForLC(){
-    this.areThereAnyChanges = true;
+  updateChangesForLC(event){
+    this.areThereAnyChanges = event;
   }
   checkForLogisticCenter(){
     this.cityService.checkForLogisticCenter().subscribe(
@@ -24,5 +25,8 @@ export class LogisticCenterComponent implements OnInit {
         this.areThereAnyChanges=res;
       }
     )
+  }
+  updateCanAddRoutes(event){
+    this.canAddRoutes = event;
   }
 }

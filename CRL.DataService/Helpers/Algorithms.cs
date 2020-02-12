@@ -63,7 +63,10 @@ namespace CRL.DataService.Helpers
                     }
                 }
                 fullDistance = calculatedRoutes.Values.Sum();
-                city.ClosenessCentralityCoefficient = 1 / fullDistance;
+                if (fullDistance != 0)
+                    city.ClosenessCentralityCoefficient = 1 / fullDistance;
+                else
+                    city.ClosenessCentralityCoefficient = 0;
                 this.dataAccessService.CityRepository.Update(city);
             }
             //returns the city with the highest Closeness Centrality Coeficient

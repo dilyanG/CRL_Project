@@ -84,5 +84,10 @@ namespace CRL.DataService.Services
             else if (byName.Id == id) return true;
             else return false;
         }
+
+        public int GetCount()
+        {
+            return DataAccessService.CityRepository.GetCount();
+        }
     }
 }

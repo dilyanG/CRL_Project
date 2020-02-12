@@ -17,6 +17,9 @@ export class CityService {
   getCitiesByName(name: string): Observable<CityModel[]> {
     return this.http.get<CityModel[]>(environment.webApi + "city/byName/" + name);
   }
+  getCount(): Observable<number> {
+    return this.http.get<number>(environment.webApi + "city/getCount");
+  }
   checkCityName(id: number, name: string): Observable<boolean> {
     return this.http.get<boolean>(environment.webApi + "city/checkCityName/" + id + "/" + name);
   }
