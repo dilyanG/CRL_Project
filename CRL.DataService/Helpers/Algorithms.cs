@@ -23,7 +23,7 @@ namespace CRL.DataService.Helpers
             //applying Prim's algorithm could provide us the Minimum Spanning tree
             List<RouteEntity> maxSpanningTreeRoutes = ApplyPrim(node);
             List<CityEntity> cities = dataAccessService.CityRepository.GetAll().ToList();
-            
+
             /*for each of the cities we define the Closeness Centrality Coeficient 
               which is a 1 divided by the sum of all routes between a given city and
               all other cities */
@@ -77,40 +77,53 @@ namespace CRL.DataService.Helpers
          saved in the database*/
         private List<RouteEntity> ApplyPrim(CityEntity node)
         {
-            Node root = new Node(node.Id, null);
             int allNodes = dataAccessService.CityRepository.GetCount();
             List<RouteEntity> treeRoutes = new List<RouteEntity>();
             List<RouteEntity> available = new List<RouteEntity>();
             List<CityEntity> visitedCities = new List<CityEntity>();
             List<RouteEntity> routes = dataAccessService.RouteRepository.GetRoutesByCity(node.Id, visitedCities.Select(c => c.Id).ToArray());
 
+            //getting available routes
+            available.AddRange(routes);
             /*until all the routes are visited or the tree routes are not as many as 
               the number of the cities - 1*/
-            while (treeRoutes.Count != allNodes - 1 && routes.Count != 0)
+            while (treeRoutes.Count != allNodes - 1 && available.Count != 0)
             {
-                //getting available routes
-                available.AddRange(routes);
                 //selecting the min route
                 RouteEntity forAdd = available.Where(a => a.Distance == available.Min(a2 => a2.Distance)).FirstOrDefault();
                 if (forAdd != null)
                 {
                     treeRoutes.Add(forAdd);
                     available.Remove(forAdd);
-                    visitedCities.Add(node);
+                    if (visitedCities.Contains(node))
+                    {
+                        if (forAdd.End?.Id != node.Id)
+                            visitedCities.Add(forAdd.End);
+                        else
+                            visitedCities.Add(forAdd.Start);
+                    }
+                    else
+                    {
+                        visitedCities.Add(node);
+                    }
                     if (forAdd.End?.Id != node.Id)
                         node = forAdd.End;
                     else
                         node = forAdd.Start;
-                    //removing routes that connect already visited cities
-                    List<RouteEntity> forRemoval = available.Where(r => visitedCities.Select(c => c.Id).ToArray().Contains(r.Start.Id)
-                                                                     && visitedCities.Select(c => c.Id).ToArray().Contains(r.End.Id)).ToList();
-                    foreach (var item in forRemoval)
-                    {
-                        available.Remove(item);
-                    }
-
                 }
                 routes = dataAccessService.RouteRepository.GetRoutesByCity(node.Id, visitedCities.Select(c => c.Id).ToArray());
+                foreach (var route in routes)
+                {
+                    if (!available.Contains(route))
+                        available.Add(route);
+                }
+                //removing routes that connect already visited cities
+                List<RouteEntity> forRemoval = available.Where(r => visitedCities.Select(c => c.Id).ToArray().Contains(r.Start.Id)
+                                                                     && visitedCities.Select(c => c.Id).ToArray().Contains(r.End.Id)).ToList();
+                foreach (var item in forRemoval)
+                {
+                    available.Remove(item);
+                }
             }
             return treeRoutes;
         }

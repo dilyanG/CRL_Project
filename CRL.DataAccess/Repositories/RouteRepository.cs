@@ -57,9 +57,8 @@ namespace CRL.DataAccess.Repositories
         public List<RouteEntity> GetRoutesByCity(int cityId, int[] without)
         {
             return Context.Routes.Include(r => r.Start).Include(r => r.End)
-                .Where(r => (r.Start.Id == cityId || r.End.Id == cityId)
-                            && !without.Contains(r.End.Id) 
-                            && !without.Contains(r.Start.Id)).ToList();
+                .Where(r => (r.Start.Id == cityId && !without.Contains(r.End.Id))
+                            || (r.End.Id == cityId && !without.Contains(r.Start.Id))).ToList();
         }
 
         public List<RouteEntity> GetRoutesByCities(int[] ids)
